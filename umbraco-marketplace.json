@@ -1,0 +1,14 @@
+{
+    "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json", 
+    "AuthorDetails": {
+      "Name": "Sam Forrest",
+      "ImageUrl": "https://github.com/SamuelJForrest.png"
+    },
+    "Category": "",
+    "Description": "",
+    "LicenseTypes": [ "Free" ],
+    "IssueTrackerUrl": "https://github.com/SamuelJForrest/UmbracoUserGuides/issues",
+    "PackageType": "Package",
+    "Tags": [],
+    "Title": "Umbraco Editor Guides "
+  }
