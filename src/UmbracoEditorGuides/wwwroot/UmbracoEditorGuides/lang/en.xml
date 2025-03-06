@@ -2,4 +2,7 @@
 <language alias="en" intName="English (UK)" localName="English (UK)" lcid="" culture="en-GB">
     <area alias="UmbracoEditorGuides">
     </area>
+  <area alias="sections">
+    <key alias="editorGuides">Editor Guides</key>
+  </area>
 </language>

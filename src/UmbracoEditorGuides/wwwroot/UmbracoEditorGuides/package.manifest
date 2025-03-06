@@ -12,6 +12,12 @@
             ]
         }
     ],
+    "sections": [
+        {
+            "alias": "editorGuides",
+            "name": "Editor Guides"
+        }
+    ],
     "css": [
         "~/App_Plugins/UmbracoEditorGuides/editorguides.css"
     ],
