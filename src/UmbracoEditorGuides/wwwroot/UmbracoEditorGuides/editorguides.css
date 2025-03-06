@@ -1,0 +1,21 @@
+.editorguides-editor-controls > * {
+  margin-right: 4px;
+}
+
+.editorguides-list {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+}
+
+.editorguides-list-item {
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  border-radius: 4px;
+  padding: 8px;
+}
+
+.editorguides-list-item uui-icon {
+    width: 50px;
+    height: 50px;
+}

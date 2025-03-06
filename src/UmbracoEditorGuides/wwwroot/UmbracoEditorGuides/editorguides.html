@@ -1,5 +1,32 @@
-<h2>Editor Guides</h2>
 
 <div ng-controller="Umbraco.EditorGuides as vm">
+  <div class="editorguides-container">
+    <uui-box ng-if="!vm.editingModeEnabled">
+      <div slot="headline">Guides <span ng-if="vm.FriendlyDocTypeName">({{ vm.FriendlyDocTypeName }})</span></div>
+      <uui-button label="New Guide" look="primary" ng-click="vm.toggleEditingMode()" style="margin-bottom: 16px;"></uui-button>
 
+      <div class="editorguides-list-container">
+          <div class="editorguides-list" ng-if="vm.CurrentGuides">
+            <div class="editorguides-list-item" ng-repeat="guide in vm.CurrentGuides">
+              <uui-icon name="{{ guide.icon }}"></uui-icon>
+              <h3>{{ guide.title }}</h3>
+              <p>{{ guide.content }}</p>
+            </div>
+          </div>
+
+        <div ng-if="vm.CurrentGuides.length < 1">
+          Nothing to see here... check back later.
+        </div>
+      </div>
+    </uui-box>
+
+    <uui-box headline="New Guide" ng-if="vm.editingModeEnabled">
+      <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..."></uui-input>
+      <uui-textarea label="New Guide" id="editorguides-input" placeholder="New note..."></uui-textarea>
+      <div class="editorguides-editor-controls">
+        <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.toggleEditingMode()"></uui-button>
+        <uui-button label="Save" look="primary" ng-click="vm.saveGuide()"></uui-button>
+      </div>
+    </uui-box>
+  </div>
 </div>
