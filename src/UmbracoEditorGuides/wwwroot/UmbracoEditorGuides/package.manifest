@@ -1,0 +1,14 @@
+{
+    "contentApps": [
+        {
+            "name": "Editor Guides",
+            "alias": "editorGuides",
+            "weight": -100,
+            "icon": "icon-book",
+            "view": "~/App_Plugins/UmbracoEditorGuides/editorguides.html"
+        }
+    ],
+    "javascript": [
+        "~/App_Plugins/UmbracoEditorGuides/editorguides.controller.js"
+    ]
+}
