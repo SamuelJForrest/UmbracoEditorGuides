@@ -46,6 +46,7 @@ angular.module("umbraco")
       if (!currentEditorValue || !currentTitle) return;
 
       var editorGuideObj = {
+        "id": self.crypto.randomUUID(),
         "contentTypeId": vm.CurrentNodeTypeId,
         "nodeAlias": vm.CurrentNodeAlias,
         "title": currentTitle,

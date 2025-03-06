@@ -6,13 +6,24 @@
       <uui-button label="New Guide" look="primary" ng-click="vm.toggleEditingMode()" style="margin-bottom: 16px;"></uui-button>
 
       <div class="editorguides-list-container">
-          <div class="editorguides-list" ng-if="vm.CurrentGuides">
-            <div class="editorguides-list-item" ng-repeat="guide in vm.CurrentGuides">
-              <uui-icon name="{{ guide.icon }}"></uui-icon>
-              <h3>{{ guide.title }}</h3>
-              <p>{{ guide.content }}</p>
-            </div>
-          </div>
+        <uui-table ng-if="vm.CurrentGuides.length > 0">
+          <uui-table-head>
+            <uui-table-head-cell>Title</uui-table-head-cell>
+            <uui-table-head-cell>Content</uui-table-head-cell>
+            <uui-table-head-cell>Actions</uui-table-head-cell>
+          </uui-table-head>
+          <uui-table-row ng-repeat="guide in vm.CurrentGuides">
+            <uui-table-cell>{{ guide.title }}</uui-table-cell>
+            <uui-table-cell>{{ guide.content }}</uui-table-cell>
+            <uui-table-cell>
+              <uui-button-group>
+                <uui-button look="primary" label="View"></uui-button>
+                <uui-button look="secondary" label="Edit"></uui-button>
+                <uui-button look="primary" label="Delete" color="danger"></uui-button>
+              </uui-button-group>
+            </uui-table-cell>
+          </uui-table-row>
+        </uui-table>
 
         <div ng-if="vm.CurrentGuides.length < 1">
           Nothing to see here... check back later.
