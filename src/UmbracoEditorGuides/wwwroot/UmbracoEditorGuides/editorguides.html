@@ -1,7 +1,7 @@
 
 <div ng-controller="Umbraco.EditorGuides as vm">
   <div class="editorguides-container">
-    <uui-box ng-if="!vm.editingModeEnabled">
+    <uui-box ng-if="!vm.editingModeEnabled && !vm.viewModeEnabled">
       <div slot="headline">Guides <span ng-if="vm.FriendlyDocTypeName">({{ vm.FriendlyDocTypeName }})</span></div>
       <uui-button label="New Guide" look="primary" ng-click="vm.toggleEditingMode()" style="margin-bottom: 16px;"></uui-button>
 
@@ -17,7 +17,7 @@
             <uui-table-cell>{{ guide.content }}</uui-table-cell>
             <uui-table-cell>
               <uui-button-group>
-                <uui-button look="primary" label="View"></uui-button>
+                <uui-button look="primary" label="View" ng-click="vm.setViewMode(guide.id)"></uui-button>
                 <uui-button look="secondary" label="Edit"></uui-button>
                 <uui-button look="primary" label="Delete" color="danger"></uui-button>
               </uui-button-group>
@@ -38,6 +38,12 @@
         <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.toggleEditingMode()"></uui-button>
         <uui-button label="Save" look="primary" ng-click="vm.saveGuide()"></uui-button>
       </div>
+    </uui-box>
+
+    <uui-box headline="{{ vm.CurrentGuide.title }}" ng-if="vm.viewModeEnabled">
+      <p>{{ vm.CurrentGuide.content }}</p>
+
+      <uui-button label="Back" look="primary" color="danger" ng-click="vm.returnToListingMode()"></uui-button>
     </uui-box>
   </div>
 </div>

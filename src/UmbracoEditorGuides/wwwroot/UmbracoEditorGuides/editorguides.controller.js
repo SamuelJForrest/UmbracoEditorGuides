@@ -2,21 +2,43 @@ angular.module("umbraco")
   .controller("Umbraco.EditorGuides", function ($scope, editorState, userService, contentResource) {
     var vm = this;
     vm.editingModeEnabled = false;
+    vm.viewModeEnabled = false;
     vm.CurrentNodeId = editorState.current.id;
     vm.CurrentNodeModel = editorState.current;
     vm.CurrentNodeAlias = vm.CurrentNodeModel.contentTypeAlias;
     vm.CurrentNodeTypeId = vm.CurrentNodeModel.contentTypeId;
     vm.CurrentNodeIcon = vm.CurrentNodeModel.icon.split(' ')[0];
+    vm.CurrentGuide = {};
 
     vm.$onInit = () => {
       vm.FriendlyDocTypeName = capitalizeCamelCaseString(vm.CurrentNodeAlias);
     }
-    console.log(vm);
+
+    vm.returnToListingMode = () => {
+      vm.editingModeEnabled = false;
+      vm.viewModeEnabled = false;
+    }
 
     vm.toggleEditingMode = () => {
       vm.editingModeEnabled = vm.editingModeEnabled ? false : true;
       vm.loadGuides();
     }
+
+    vm.setViewMode = (guideId) => {
+      vm.editingModeEnabled = false;
+      vm.viewModeEnabled = true;
+
+      var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
+      var currentGuide = allGuides.filter(guide => guide.id === guideId);
+
+      vm.CurrentGuide = currentGuide[0];
+
+      console.log(currentGuide);
+    }
+
+    //vm.retrieveGuide = (guideId) => {
+
+    //}
 
     vm.loadGuides = () => {
       var allEditorGuides = JSON.parse(localStorage.getItem('editorGuides'));
