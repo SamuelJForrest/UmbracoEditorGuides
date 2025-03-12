@@ -40,6 +40,14 @@ angular.module("umbraco")
 
     //}
 
+    vm.deleteGuide = (guideId) => {
+      var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
+      var updatedGuides = allGuides.filter(guide => guide.id !== guideId);
+      console.log(updatedGuides);
+      localStorage.setItem('editorGuides', JSON.stringify(updatedGuides));
+      vm.loadGuides();
+    }
+
     vm.loadGuides = () => {
       var allEditorGuides = JSON.parse(localStorage.getItem('editorGuides'));
       var currentGuides = [];
