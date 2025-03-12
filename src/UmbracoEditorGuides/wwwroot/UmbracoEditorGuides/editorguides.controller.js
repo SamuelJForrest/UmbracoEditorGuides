@@ -1,8 +1,13 @@
 angular.module("umbraco")
   .controller("Umbraco.EditorGuides", function ($scope, editorState, userService, contentResource) {
     var vm = this;
-    vm.editingModeEnabled = false;
-    vm.viewModeEnabled = false;
+
+    vm.LISTING_STATE = "LISTING";
+    vm.EDITING_STATE = "EDITING";
+    vm.VIEW_STATE = "VIEWING";
+    vm.DELETE_STATE = "DELETING";
+
+    vm.viewState = vm.LISTING_STATE;
     vm.CurrentNodeId = editorState.current.id;
     vm.CurrentNodeModel = editorState.current;
     vm.CurrentNodeAlias = vm.CurrentNodeModel.contentTypeAlias;
@@ -14,26 +19,18 @@ angular.module("umbraco")
       vm.FriendlyDocTypeName = capitalizeCamelCaseString(vm.CurrentNodeAlias);
     }
 
-    vm.returnToListingMode = () => {
-      vm.editingModeEnabled = false;
-      vm.viewModeEnabled = false;
-    }
-
-    vm.toggleEditingMode = () => {
-      vm.editingModeEnabled = vm.editingModeEnabled ? false : true;
+    vm.setViewState = (state) => {
+      vm.viewState = state;
       vm.loadGuides();
     }
 
-    vm.setViewMode = (guideId) => {
-      vm.editingModeEnabled = false;
-      vm.viewModeEnabled = true;
+    vm.viewGuide = (guideId) => {
+      vm.setViewState(vm.VIEW_STATE);
 
       var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
       var currentGuide = allGuides.filter(guide => guide.id === guideId);
 
       vm.CurrentGuide = currentGuide[0];
-
-      console.log(currentGuide);
     }
 
     //vm.retrieveGuide = (guideId) => {
@@ -45,6 +42,7 @@ angular.module("umbraco")
       var updatedGuides = allGuides.filter(guide => guide.id !== guideId);
       console.log(updatedGuides);
       localStorage.setItem('editorGuides', JSON.stringify(updatedGuides));
+      vm.viewState = vm.LISTING_STATE;
       vm.loadGuides();
     }
 
@@ -96,14 +94,11 @@ angular.module("umbraco")
       allEditorGuides.push(editorGuideObj);
 
       var retrievedEditorGuides = localStorage.setItem('editorGuides', JSON.stringify(allEditorGuides));
-      console.log(retrievedEditorGuides);
 
-      console.log(editorGuideObj);
-      console.log(allEditorGuides);
-
-      vm.toggleEditingMode();
+      vm.setViewState(vm.LISTING_STATE);
     }
 
+    // TODO: move this into a service
     function capitalizeCamelCaseString(camelCaseString) {
       return camelCaseString
         .replace(/([A-Z])/g, ' $1') // Add space before each uppercase letter
