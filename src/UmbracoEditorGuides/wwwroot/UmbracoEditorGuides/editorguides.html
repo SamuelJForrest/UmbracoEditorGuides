@@ -19,7 +19,7 @@
               <uui-button-group>
                 <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.id)"></uui-button>
                 <uui-button look="secondary" label="Edit"></uui-button>
-                <uui-button look="primary" label="Delete" color="danger" ng-click="vm.setViewState(vm.DELETE_STATE)"></uui-button>
+                <uui-button look="primary" label="Delete" color="danger" ng-click="vm.showDeleteWarning(guide.id)"></uui-button>
               </uui-button-group>
             </uui-table-cell>
           </uui-table-row>
@@ -48,7 +48,8 @@
 
     <uui-box headline="Delete {{ vm.CurrentGuide.title }}?" ng-if="vm.viewState == vm.DELETE_STATE">
       <p>Are you sure you want to delete {{ vm.CurrentGuide.title }}? This cannot be undone.</p>
-      <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(guide.id)"></uui-button>
+      <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(vm.CurrentGuide.id)"></uui-button>
+      <uui-button label="Go back" look="primary" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
     </uui-box>
   </div>
 </div>

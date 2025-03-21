@@ -26,21 +26,24 @@ angular.module("umbraco")
 
     vm.viewGuide = (guideId) => {
       vm.setViewState(vm.VIEW_STATE);
+      vm.setCurrentGuide(guideId);
+    }
 
+    vm.showDeleteWarning = (guideId) => {
+      vm.setViewState(vm.DELETE_STATE);
+      vm.setCurrentGuide(guideId);
+    }
+
+    vm.setCurrentGuide = (guideId) => {
       var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
       var currentGuide = allGuides.filter(guide => guide.id === guideId);
 
       vm.CurrentGuide = currentGuide[0];
     }
 
-    //vm.retrieveGuide = (guideId) => {
-
-    //}
-
     vm.deleteGuide = (guideId) => {
       var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
       var updatedGuides = allGuides.filter(guide => guide.id !== guideId);
-      console.log(updatedGuides);
       localStorage.setItem('editorGuides', JSON.stringify(updatedGuides));
       vm.viewState = vm.LISTING_STATE;
       vm.loadGuides();
@@ -53,14 +56,11 @@ angular.module("umbraco")
       if (!allEditorGuides) return;
 
       allEditorGuides.forEach(guide => {
-        console.log(guide.contentTypeId);
-
         if (guide.contentTypeId != vm.CurrentNodeTypeId) return;
 
         currentGuides.push(guide);
       });
 
-      console.log(currentGuides);
       vm.CurrentGuides = currentGuides;
     }
     vm.loadGuides();
@@ -85,7 +85,6 @@ angular.module("umbraco")
       var allEditorGuides = JSON.parse(localStorage.getItem('editorGuides'));
 
       if (allEditorGuides == null) {
-        console.log('editor guides are null');
         allEditorGuides = [];
       } else {
         console.log(allEditorGuides);
@@ -93,7 +92,7 @@ angular.module("umbraco")
 
       allEditorGuides.push(editorGuideObj);
 
-      var retrievedEditorGuides = localStorage.setItem('editorGuides', JSON.stringify(allEditorGuides));
+      localStorage.setItem('editorGuides', JSON.stringify(allEditorGuides));
 
       vm.setViewState(vm.LISTING_STATE);
     }
