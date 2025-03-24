@@ -82,9 +82,9 @@ angular.module("umbraco")
       var editorGuidesTitle = document.querySelector('#editorguides-title');
       var editorInput = document.querySelector('#editorguides-input');
       var currentTitle = editorGuidesTitle.value;
-      var currentEditorValue = editorInput;
+      var currentEditorValue = $scope.rteEditorGuides.value.markup;
 
-      console.log(currentTitle, currentEditorValue);
+      console.log(currentTitle, $scope.rteEditorGuides.value);
 
       if (!currentEditorValue || !currentTitle) return;
 
