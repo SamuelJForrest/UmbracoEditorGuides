@@ -9,9 +9,9 @@ using Umbraco.Community.UmbracoEditorGuides.Models;
 
 namespace Umbraco.Community.UmbracoEditorGuides.Migrations
 {
-    public class AddUmbracoEditorGuidesMigration : MigrationBase
+    public class AddEditorGuidesMigration : MigrationBase
     {
-        public AddUmbracoEditorGuidesMigration(IMigrationContext context)
+        public AddEditorGuidesMigration(IMigrationContext context)
             : base(context)
         {
         }
@@ -19,7 +19,7 @@ namespace Umbraco.Community.UmbracoEditorGuides.Migrations
         {
             if (TableExists("EditorGuides") == false)
             {
-                Create.Table<UmbracoEditorGuidesSchema>().Do();
+                Create.Table<GuideSchema>().Do();
             }
             else
             {

@@ -15,6 +15,19 @@ angular.module("umbraco")
     vm.CurrentNodeIcon = vm.CurrentNodeModel.icon.split(' ')[0];
     vm.CurrentGuide = {};
 
+    $scope.rteEditorGuides = {
+      view: "rte",
+      config: {
+        editor: {
+          toolbar: ["ace", "undo", "redo", "bold", "italic", "alignleft", "aligncenter", "alignright", "bullist", "numlist", "link", "umbmediapicker", "fullscreen"],
+          style_formats: [{ title: "Heading 1", inline: "h1" }],
+          plugins: ["fullscreen"],
+          stylesheets: [],
+          dimensions: { height: 300 }
+        }
+      }
+    };
+
     vm.$onInit = () => {
       vm.FriendlyDocTypeName = capitalizeCamelCaseString(vm.CurrentNodeAlias);
     }
@@ -69,7 +82,9 @@ angular.module("umbraco")
       var editorGuidesTitle = document.querySelector('#editorguides-title');
       var editorInput = document.querySelector('#editorguides-input');
       var currentTitle = editorGuidesTitle.value;
-      var currentEditorValue = editorInput.value;
+      var currentEditorValue = editorInput;
+
+      console.log(currentTitle, currentEditorValue);
 
       if (!currentEditorValue || !currentTitle) return;
 

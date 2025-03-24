@@ -33,7 +33,7 @@
 
     <uui-box headline="New Guide" ng-if="vm.viewState == vm.EDITING_STATE">
       <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..."></uui-input>
-      <uui-textarea label="New Guide" id="editorguides-input" placeholder="New note..."></uui-textarea>
+      <umb-property-editor id="editorguides-input" model="rteEditorGuides"></umb-property-editor>
       <div class="editorguides-editor-controls">
         <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
         <uui-button label="Save" look="primary" ng-click="vm.saveGuide()"></uui-button>

@@ -12,18 +12,18 @@ using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
 
 namespace Umbraco.Community.UmbracoEditorGuides.Migrations
 {
-    public class UmbracoEditorGuidesComposer : ComponentComposer<UmbracoEditorGuidesTableMigration>
+    public class UmbracoEditorGuidesComposer : ComponentComposer<EditorGuidesTableMigration>
     {
     }
 
-    public class UmbracoEditorGuidesTableMigration : IComponent
+    public class EditorGuidesTableMigration : IComponent
     {
         private readonly ICoreScopeProvider _coreScopeProvider;
         private readonly IMigrationPlanExecutor _migrationPlanExecutor;
         private readonly IKeyValueService _keyValueService;
         private readonly IRuntimeState _runtimeState;
 
-        public UmbracoEditorGuidesTableMigration(
+        public EditorGuidesTableMigration(
             ICoreScopeProvider coreScopeProvider,
             IMigrationPlanExecutor migrationPlanExecutor,
             IKeyValueService keyValueService,
@@ -45,7 +45,7 @@ namespace Umbraco.Community.UmbracoEditorGuides.Migrations
             var migrationPlan = new MigrationPlan("EditorGuides");
 
             migrationPlan.From(string.Empty)
-                .To<AddUmbracoEditorGuidesMigration>("AddEditorGuidesTable");
+                .To<AddEditorGuidesMigration>("AddEditorGuidesTable");
 
             var upgrader = new Upgrader(migrationPlan);
             upgrader.Execute(_migrationPlanExecutor, _coreScopeProvider, _keyValueService);
