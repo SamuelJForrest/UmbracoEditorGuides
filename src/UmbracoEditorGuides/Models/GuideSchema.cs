@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,12 +25,12 @@ namespace Umbraco.Community.UmbracoEditorGuides.Models
         public int ContentTypeId { get; set; }
 
         [Column("NodeAlias")]
-        public string NodeAlias { get; set; }
+        public required string NodeAlias { get; set; }
 
         [Column("Title")]
-        public string Title { get; set; }
+        public string Title { get; set; } = "New Guide";
 
         [Column("Content")]
-        public string Content { get; set; }
+        public string? Content { get; set; }
     }
 }

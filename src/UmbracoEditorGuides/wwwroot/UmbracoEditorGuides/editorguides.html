@@ -13,13 +13,13 @@
             <uui-table-head-cell>Actions</uui-table-head-cell>
           </uui-table-head>
           <uui-table-row ng-repeat="guide in vm.CurrentGuides">
-            <uui-table-cell>{{ guide.title }}</uui-table-cell>
-            <uui-table-cell>{{ guide.content | limitTo: 50 }}{{ guide.content.length > 50 ? '... Read More' : '' }}</uui-table-cell>
+            <uui-table-cell>{{ guide.Title }}</uui-table-cell>
+            <uui-table-cell ng-bind-html="guide.Content"></uui-table-cell>
             <uui-table-cell>
               <uui-button-group>
-                <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.id)"></uui-button>
+                <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.Guid)"></uui-button>
                 <uui-button look="secondary" label="Edit"></uui-button>
-                <uui-button look="primary" label="Delete" color="danger" ng-click="vm.showDeleteWarning(guide.id)"></uui-button>
+                <uui-button look="primary" label="Delete" color="danger" ng-click="vm.showDeleteWarning(guide.Guid)"></uui-button>
               </uui-button-group>
             </uui-table-cell>
           </uui-table-row>
@@ -40,15 +40,15 @@
       </div>
     </uui-box>
 
-    <uui-box headline="{{ vm.CurrentGuide.title }}" ng-if="vm.viewState == vm.VIEW_STATE">
-      <p>{{ vm.CurrentGuide.content }}</p>
+    <uui-box headline="{{ vm.CurrentGuide.Title }}" ng-if="vm.viewState == vm.VIEW_STATE">
+      <div ng-bind-html="vm.CurrentGuide.Content"></div>
 
       <uui-button label="Back" look="primary" color="danger" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
     </uui-box>
 
-    <uui-box headline="Delete {{ vm.CurrentGuide.title }}?" ng-if="vm.viewState == vm.DELETE_STATE">
-      <p>Are you sure you want to delete {{ vm.CurrentGuide.title }}? This cannot be undone.</p>
-      <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(vm.CurrentGuide.id)"></uui-button>
+    <uui-box headline="Delete {{ vm.CurrentGuide.Title }}?" ng-if="vm.viewState == vm.DELETE_STATE">
+      <p>Are you sure you want to delete "<em><strong>{{ vm.CurrentGuide.Title }}</strong></em>"? This cannot be undone.</p>
+      <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(vm.CurrentGuide.Guid)"></uui-button>
       <uui-button label="Go back" look="primary" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
     </uui-box>
   </div>

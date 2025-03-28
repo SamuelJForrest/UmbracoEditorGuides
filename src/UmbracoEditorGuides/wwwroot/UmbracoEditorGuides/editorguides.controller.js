@@ -1,5 +1,5 @@
 angular.module("umbraco")
-  .controller("Umbraco.EditorGuides", function ($scope, editorState, userService, contentResource) {
+  .controller("Umbraco.EditorGuides", function ($scope, editorState, $http, notificationsService) {
     var vm = this;
 
     vm.LISTING_STATE = "LISTING";
@@ -12,11 +12,10 @@ angular.module("umbraco")
     vm.CurrentNodeModel = editorState.current;
     vm.CurrentNodeAlias = vm.CurrentNodeModel.contentTypeAlias;
     vm.CurrentNodeTypeId = vm.CurrentNodeModel.contentTypeId;
-    vm.CurrentNodeIcon = vm.CurrentNodeModel.icon.split(' ')[0];
     vm.CurrentGuide = {};
 
     $scope.rteEditorGuides = {
-      view: "rte",
+      view: Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + '/views/propertyeditors/rte/rte.html',
       config: {
         editor: {
           toolbar: ["ace", "undo", "redo", "bold", "italic", "alignleft", "aligncenter", "alignright", "bullist", "numlist", "link", "umbmediapicker", "fullscreen"],
@@ -48,68 +47,59 @@ angular.module("umbraco")
     }
 
     vm.setCurrentGuide = (guideId) => {
-      var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
-      var currentGuide = allGuides.filter(guide => guide.id === guideId);
-
-      vm.CurrentGuide = currentGuide[0];
+      $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuideByGuid?guid=${guideId}`)
+        .then((response) => {
+          vm.CurrentGuide = response.data.guide;
+        });
     }
 
     vm.deleteGuide = (guideId) => {
-      var allGuides = JSON.parse(localStorage.getItem('editorGuides'));
-      var updatedGuides = allGuides.filter(guide => guide.id !== guideId);
-      localStorage.setItem('editorGuides', JSON.stringify(updatedGuides));
-      vm.viewState = vm.LISTING_STATE;
-      vm.loadGuides();
+      $http.delete(`/umbraco/backoffice/api/EditorGuidesApi/DeleteGuide?guid=${guideId}`)
+        .then((response) => {
+          vm.viewState = vm.LISTING_STATE;
+          vm.loadGuides();
+        });
     }
 
     vm.loadGuides = () => {
-      var allEditorGuides = JSON.parse(localStorage.getItem('editorGuides'));
-      var currentGuides = [];
+      $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuidesByType?contentTypeId=${vm.CurrentNodeTypeId}`)
+        .then((response) => {
+          let allEditorGuides = response.data.guides;
 
-      if (!allEditorGuides) return;
+          if (!allEditorGuides) return;
 
-      allEditorGuides.forEach(guide => {
-        if (guide.contentTypeId != vm.CurrentNodeTypeId) return;
+          const currentGuides = [];
+          allEditorGuides.forEach(guide => {
+            if (guide.ContentTypeId != vm.CurrentNodeTypeId) return;
 
-        currentGuides.push(guide);
-      });
+            currentGuides.push(guide);
+          });
 
-      vm.CurrentGuides = currentGuides;
+          vm.CurrentGuides = currentGuides;
+        });
     }
     vm.loadGuides();
 
-    vm.saveGuide = () => {
+    vm.saveGuide = async () => {
       var editorGuidesTitle = document.querySelector('#editorguides-title');
-      var editorInput = document.querySelector('#editorguides-input');
       var currentTitle = editorGuidesTitle.value;
       var currentEditorValue = $scope.rteEditorGuides.value.markup;
-
-      console.log(currentTitle, $scope.rteEditorGuides.value);
 
       if (!currentEditorValue || !currentTitle) return;
 
       var editorGuideObj = {
-        "id": self.crypto.randomUUID(),
+        "guid": self.crypto.randomUUID(),
         "contentTypeId": vm.CurrentNodeTypeId,
         "nodeAlias": vm.CurrentNodeAlias,
         "title": currentTitle,
         "content": currentEditorValue,
-        "icon": vm.CurrentNodeIcon
       }
 
-      var allEditorGuides = JSON.parse(localStorage.getItem('editorGuides'));
-
-      if (allEditorGuides == null) {
-        allEditorGuides = [];
-      } else {
-        console.log(allEditorGuides);
-      }
-
-      allEditorGuides.push(editorGuideObj);
-
-      localStorage.setItem('editorGuides', JSON.stringify(allEditorGuides));
-
-      vm.setViewState(vm.LISTING_STATE);
+      $http.post('/umbraco/backoffice/api/EditorGuidesApi/CreateGuide', editorGuideObj)
+        .then(() => {
+          vm.setViewState(vm.LISTING_STATE);
+          notificationsService.success("Guide saved successfully");
+        });
     }
 
     // TODO: move this into a service
