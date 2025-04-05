@@ -1,9 +1,9 @@
 
 <div ng-controller="Umbraco.EditorGuides as vm">
   <div class="editorguides-container">
-    <uui-box ng-if="vm.viewState == vm.LISTING_STATE">
+    <uui-box ng-if="vm.viewState == vm.ViewStates.LISTING">
       <div slot="headline">Guides <span ng-if="vm.FriendlyDocTypeName">({{ vm.FriendlyDocTypeName }})</span></div>
-      <uui-button label="New Guide" look="primary" ng-click="vm.setViewState(vm.EDITING_STATE)" style="margin-bottom: 16px;"></uui-button>
+      <uui-button label="New Guide" look="primary" ng-click="vm.setViewState(vm.ViewStates.EDITING)" style="margin-bottom: 16px;"></uui-button>
 
       <div class="editorguides-list-container">
         <uui-table ng-if="vm.CurrentGuides.length > 0">
@@ -31,25 +31,25 @@
       </div>
     </uui-box>
 
-    <uui-box headline="New Guide" ng-if="vm.viewState == vm.EDITING_STATE">
+    <uui-box headline="New Guide" ng-if="vm.viewState == vm.ViewStates.EDITING">
       <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..."></uui-input>
       <umb-property-editor id="editorguides-input" model="rteEditorGuides"></umb-property-editor>
       <div class="editorguides-editor-controls">
-        <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
+        <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.setViewState(vm.ViewStates.LISTING)"></uui-button>
         <uui-button label="Save" look="primary" ng-click="vm.saveGuide()"></uui-button>
       </div>
     </uui-box>
 
-    <uui-box headline="{{ vm.CurrentGuide.Title }}" ng-if="vm.viewState == vm.VIEW_STATE">
+    <uui-box headline="{{ vm.CurrentGuide.Title }}" ng-if="vm.viewState == vm.ViewStates.VIEWING">
       <div ng-bind-html="vm.CurrentGuide.Content"></div>
 
-      <uui-button label="Back" look="primary" color="danger" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
+      <uui-button label="Back" look="primary" color="danger" ng-click="vm.setViewState(vm.ViewStates.LISTING)"></uui-button>
     </uui-box>
 
-    <uui-box headline="Delete {{ vm.CurrentGuide.Title }}?" ng-if="vm.viewState == vm.DELETE_STATE">
+    <uui-box headline="Delete {{ vm.CurrentGuide.Title }}?" ng-if="vm.viewState == vm.ViewStates.DELETING">
       <p>Are you sure you want to delete "<em><strong>{{ vm.CurrentGuide.Title }}</strong></em>"? This cannot be undone.</p>
       <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(vm.CurrentGuide.Guid)"></uui-button>
-      <uui-button label="Go back" look="primary" ng-click="vm.setViewState(vm.LISTING_STATE)"></uui-button>
+      <uui-button label="Go back" look="primary" ng-click="vm.setViewState(vm.ViewStates.LISTING)"></uui-button>
     </uui-box>
   </div>
 </div>

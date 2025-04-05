@@ -2,12 +2,19 @@ angular.module("umbraco")
   .controller("Umbraco.EditorGuides", function ($scope, editorState, $http, notificationsService) {
     var vm = this;
 
-    vm.LISTING_STATE = "LISTING";
-    vm.EDITING_STATE = "EDITING";
-    vm.VIEW_STATE = "VIEWING";
-    vm.DELETE_STATE = "DELETING";
+    vm.ViewStates = Object.freeze({
+      LISTING: "LISTING",
+      EDITING: "EDITING",
+      VIEWING: "VIEWING",
+      DELETING: "DELETING"
+    });
 
-    vm.viewState = vm.LISTING_STATE;
+    //vm.LISTING_STATE = "LISTING";
+    //vm.EDITING_STATE = "EDITING";
+    //vm.VIEW_STATE = "VIEWING";
+    //vm.DELETE_STATE = "DELETING";
+
+    vm.viewState = vm.ViewStates.LISTING;
     vm.CurrentNodeId = editorState.current.id;
     vm.CurrentNodeModel = editorState.current;
     vm.CurrentNodeAlias = vm.CurrentNodeModel.contentTypeAlias;
@@ -37,12 +44,12 @@ angular.module("umbraco")
     }
 
     vm.viewGuide = (guideId) => {
-      vm.setViewState(vm.VIEW_STATE);
+      vm.setViewState(vm.ViewStates.VIEWING);
       vm.setCurrentGuide(guideId);
     }
 
     vm.showDeleteWarning = (guideId) => {
-      vm.setViewState(vm.DELETE_STATE);
+      vm.setViewState(vm.ViewStates.DELETING);
       vm.setCurrentGuide(guideId);
     }
 
@@ -56,7 +63,7 @@ angular.module("umbraco")
     vm.editGuide = (guideId) => {
       $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuideByGuid?guid=${guideId}`)
         .then((response) => {
-          vm.setViewState(vm.EDITING_STATE);
+          vm.setViewState(vm.ViewStates.EDITING);
 
           var editorGuidesTitle = document.querySelector('#editorguides-title');
           //var currentTitle = editorGuidesTitle.value;
@@ -74,7 +81,7 @@ angular.module("umbraco")
     vm.deleteGuide = (guideId) => {
       $http.delete(`/umbraco/backoffice/api/EditorGuidesApi/DeleteGuide?guid=${guideId}`)
         .then((response) => {
-          vm.viewState = vm.LISTING_STATE;
+          vm.viewState = vm.ViewStates.LISTING;
           vm.loadGuides();
           notificationsService.success("Guide deleted");
         });
@@ -116,7 +123,7 @@ angular.module("umbraco")
 
       $http.post('/umbraco/backoffice/api/EditorGuidesApi/CreateGuide', editorGuideObj)
         .then(() => {
-          vm.setViewState(vm.LISTING_STATE);
+          vm.setViewState(vm.ViewStates.LISTING);
           notificationsService.success("Guide saved successfully");
         });
     }
