@@ -1,3 +1,7 @@
+p {
+    margin: 0;
+}
+
 .editorguides-editor-controls > * {
   margin-right: 4px;
 }

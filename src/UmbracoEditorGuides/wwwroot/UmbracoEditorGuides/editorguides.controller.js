@@ -53,11 +53,30 @@ angular.module("umbraco")
         });
     }
 
+    vm.editGuide = (guideId) => {
+      $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuideByGuid?guid=${guideId}`)
+        .then((response) => {
+          vm.setViewState(vm.EDITING_STATE);
+
+          var editorGuidesTitle = document.querySelector('#editorguides-title');
+          //var currentTitle = editorGuidesTitle.value;
+          //var currentEditorValue = $scope.rteEditorGuides.value.markup;
+
+          //console.log($scope.rteEditorGuides.value);
+          console.log(editorGuidesTitle);
+
+          //$scope.rteEditorGuides.value = response.data.guide.content;
+          editorGuidesTitle.value = response.data.guide.title;
+          console.log(response);
+        });
+    }
+
     vm.deleteGuide = (guideId) => {
       $http.delete(`/umbraco/backoffice/api/EditorGuidesApi/DeleteGuide?guid=${guideId}`)
         .then((response) => {
           vm.viewState = vm.LISTING_STATE;
           vm.loadGuides();
+          notificationsService.success("Guide deleted");
         });
     }
 
