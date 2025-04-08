@@ -9,11 +9,6 @@ angular.module("umbraco")
       DELETING: "DELETING"
     });
 
-    //vm.LISTING_STATE = "LISTING";
-    //vm.EDITING_STATE = "EDITING";
-    //vm.VIEW_STATE = "VIEWING";
-    //vm.DELETE_STATE = "DELETING";
-
     vm.viewState = vm.ViewStates.LISTING;
     vm.CurrentNodeId = editorState.current.id;
     vm.CurrentNodeModel = editorState.current;
@@ -66,15 +61,7 @@ angular.module("umbraco")
           vm.setViewState(vm.ViewStates.EDITING);
 
           var editorGuidesTitle = document.querySelector('#editorguides-title');
-          //var currentTitle = editorGuidesTitle.value;
-          //var currentEditorValue = $scope.rteEditorGuides.value.markup;
-
-          //console.log($scope.rteEditorGuides.value);
-          console.log(editorGuidesTitle);
-
-          //$scope.rteEditorGuides.value = response.data.guide.content;
           editorGuidesTitle.value = response.data.guide.title;
-          console.log(response);
         });
     }
 

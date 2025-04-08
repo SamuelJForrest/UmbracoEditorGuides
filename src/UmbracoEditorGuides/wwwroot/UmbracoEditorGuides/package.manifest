@@ -18,6 +18,18 @@
             "name": "Editor Guides"
         }
     ],
+    "dashboards": [
+        {
+            "alias": "editorGuidesDashboard",
+            "view": "~/App_Plugins/UmbracoEditorGuides/editorguidesdashboard.html",
+            "sections": [ "content" ],
+            "weight": 50,
+            "access": [
+                { "grant": "editor" },
+                { "grant": "admin" }
+            ]
+        }
+    ],
     "css": [
         "~/App_Plugins/UmbracoEditorGuides/editorguides.css"
     ],

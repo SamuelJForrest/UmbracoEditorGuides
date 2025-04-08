@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <language alias="en" intName="English (UK)" localName="English (UK)" lcid="" culture="en-GB">
+  <area alias="dashboardTabs">
+    <key alias="editorGuidesDashboard">Editor Guides</key>
+  </area>
+  <area alias="editorGuidesDashboard">
+    <key alias="heading">Umbraco Editor Guides</key>
+  </area>
   <area alias="sections">
     <key alias="editorGuides">Guides</key>
   </area>
