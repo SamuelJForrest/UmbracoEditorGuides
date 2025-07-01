@@ -1,5 +1,5 @@
 angular.module("umbraco")
-  .controller("Umbraco.EditorGuides", function ($scope, editorState, $http, notificationsService, tinyMceAssets, tinyMceService) {
+  .controller("Umbraco.EditorGuides", function ($scope, editorState, $http, $timeout, notificationsService, tinyMceAssets, tinyMceService) {
     var vm = this;
 
     vm.ViewStates = Object.freeze({
@@ -18,6 +18,7 @@ angular.module("umbraco")
 
     $scope.rteEditorGuides = {
       view: Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + '/views/propertyeditors/rte/rte.html',
+      mandatory: false,
       config: {
         editor: {
           toolbar: ["ace", "undo", "redo", "bold", "italic", "bullist", "numlist", "link", "fullscreen"],
@@ -60,9 +61,11 @@ angular.module("umbraco")
         .then((response) => {
           vm.setViewState(vm.ViewStates.EDITING);
 
-          var editorGuidesTitle = document.querySelector('#editorguides-title');
-          editorGuidesTitle.value = response.data.guide.title;
-          $scope.rteEditorGuides.value.markup = response.data.guide.content;
+          $timeout(() => {
+            var editorGuidesTitle = document.querySelector('#editorguides-title');
+            editorGuidesTitle.value = response.data.guide.Title;
+            $scope.rteEditorGuides.value = response.data.guide.Content;
+          }, 0);
         });
     }
 
