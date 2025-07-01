@@ -18,7 +18,7 @@ angular.module("umbraco")
 
     $scope.rteEditorGuides = {
       view: Umbraco.Sys.ServerVariables.umbracoSettings.umbracoPath + '/views/propertyeditors/rte/rte.html',
-      mandatory: false,
+      value: "",
       config: {
         editor: {
           toolbar: ["ace", "undo", "redo", "bold", "italic", "bullist", "numlist", "link", "fullscreen"],
@@ -27,6 +27,9 @@ angular.module("umbraco")
           stylesheets: [],
           dimensions: { height: 300 }
         }
+      },
+      validation: {
+        mandatory: false,
       }
     };
 
@@ -64,8 +67,11 @@ angular.module("umbraco")
           $timeout(() => {
             var editorGuidesTitle = document.querySelector('#editorguides-title');
             editorGuidesTitle.value = response.data.guide.Title;
-            $scope.rteEditorGuides.value = response.data.guide.Content;
+
+            vm.setViewState(vm.ViewStates.EDITING);
           }, 0);
+
+          $scope.rteEditorGuides.value = response.data.guide.Content;
         });
     }
 
@@ -118,7 +124,7 @@ angular.module("umbraco")
           notificationsService.success("Guide saved successfully");
         });
 
-      $scope.rteEditorGuides.value.markup = "";
+      $scope.rteEditorGuides.value = "";
     }
 
     // TODO: move this into a service
