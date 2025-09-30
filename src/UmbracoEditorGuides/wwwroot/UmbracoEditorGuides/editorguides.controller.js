@@ -21,9 +21,9 @@ angular.module("umbraco")
       value: "",
       config: {
         editor: {
-          toolbar: ["ace", "undo", "redo", "bold", "italic", "bullist", "numlist", "link", "fullscreen"],
+          toolbar: ["ace", "undo", "redo", "bold", "italic", "bullist", "numlist", "link", "fullscreen", "umbmediapicker"],
           style_formats: [{ title: "Heading 1", inline: "h1" }],
-          plugins: ["fullscreen"],
+          plugins: ["fullscreen", "umbmedia"],
           stylesheets: [],
           dimensions: { height: 300 }
         }
@@ -119,11 +119,14 @@ angular.module("umbraco")
       }
 
       $http.post('/umbraco/backoffice/api/EditorGuidesApi/CreateGuide', editorGuideObj)
-        .then(() => {
-          vm.setViewState(vm.ViewStates.LISTING);
+        .then(async () => {
+          await vm.clearGuide();
           notificationsService.success("Guide saved successfully");
         });
+    }
 
+    vm.clearGuide = () => {
+      vm.setViewState(vm.ViewStates.LISTING);
       $scope.rteEditorGuides.value = "";
     }
 
