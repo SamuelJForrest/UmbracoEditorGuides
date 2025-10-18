@@ -15,7 +15,7 @@
           <uui-table-row ng-repeat="guide in vm.CurrentGuides">
             <uui-table-cell class="editorguides-cell--title">{{ guide.Title }}</uui-table-cell>
             <uui-table-cell class="editorguides-cell--description">{{ guide.Description }}</uui-table-cell>
-            <uui-table-cell>
+            <uui-table-cell class="editorguides-cell--buttons">
               <uui-button-group>
                 <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.Guid)"></uui-button>
                 <uui-button look="secondary" label="Edit" ng-click="vm.editGuide(guide.Guid)"></uui-button>

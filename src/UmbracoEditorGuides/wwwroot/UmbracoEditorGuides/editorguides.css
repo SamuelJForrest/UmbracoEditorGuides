@@ -19,3 +19,7 @@ p {
 .editorguides-cell--description {
   width: 50%;
 }
+
+.editorguides-cell--buttons {
+  vertical-align: top;
+}
