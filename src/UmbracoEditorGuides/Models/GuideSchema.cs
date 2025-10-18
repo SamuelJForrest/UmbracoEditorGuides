@@ -30,6 +30,9 @@ namespace Umbraco.Community.UmbracoEditorGuides.Models
         [Column("Title")]
         public string Title { get; set; } = "New Guide";
 
+        [Column("Description")]
+        public string? Description { get; set; }
+
         [Column("Content")]
         public string? Content { get; set; }
     }

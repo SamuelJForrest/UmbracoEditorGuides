@@ -105,16 +105,22 @@ angular.module("umbraco")
 
     vm.saveGuide = async () => {
       var editorGuidesTitle = document.querySelector('#editorguides-title');
+      var editorGuidesDescription = document.querySelector('#editorguides-description');
       var currentTitle = editorGuidesTitle.value;
+      var currentDescription = editorGuidesDescription.value;
       var currentEditorValue = $scope.rteEditorGuides.value.markup;
 
-      if (!currentEditorValue || !currentTitle) return;
+      if (!currentEditorValue || !currentTitle){
+        notificationsService.error("Please ensure the current guide has a title and content.");
+        return;
+      }
 
       var editorGuideObj = {
         "guid": self.crypto.randomUUID(),
         "contentTypeId": vm.CurrentNodeTypeId,
         "nodeAlias": vm.CurrentNodeAlias,
         "title": currentTitle,
+        "description": currentDescription,
         "content": currentEditorValue,
       }
 

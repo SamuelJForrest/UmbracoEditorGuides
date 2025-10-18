@@ -9,12 +9,12 @@
         <uui-table ng-if="vm.CurrentGuides.length > 0">
           <uui-table-head>
             <uui-table-head-cell>Title</uui-table-head-cell>
-            <uui-table-head-cell>Content</uui-table-head-cell>
+            <uui-table-head-cell>Description</uui-table-head-cell>
             <uui-table-head-cell>Actions</uui-table-head-cell>
           </uui-table-head>
           <uui-table-row ng-repeat="guide in vm.CurrentGuides">
-            <uui-table-cell>{{ guide.Title }}</uui-table-cell>
-            <uui-table-cell ng-bind-html="guide.Content"></uui-table-cell>
+            <uui-table-cell class="editorguides-cell--title">{{ guide.Title }}</uui-table-cell>
+            <uui-table-cell class="editorguides-cell--description">{{ guide.Description }}</uui-table-cell>
             <uui-table-cell>
               <uui-button-group>
                 <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.Guid)"></uui-button>
@@ -32,8 +32,9 @@
     </uui-box>
 
     <uui-box headline="New Guide" ng-if="vm.viewState == vm.ViewStates.EDITING">
-      <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..."></uui-input>
-      <umb-property-editor id="editorguides-input" model="rteEditorGuides"></umb-property-editor>
+      <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..." class="editorguides-input"></uui-input>
+      <uui-input label="Guide Description" id="editorguides-description" placeholder="Description..." class="editorguides-input"></uui-input>
+      <umb-property-editor id="editorguides-input" model="rteEditorGuides" class="editorguides-editor"></umb-property-editor>
       <div class="editorguides-editor-controls">
         <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.clearGuide()"></uui-button>
         <uui-button label="Save" look="primary" ng-click="vm.saveGuide()"></uui-button>

@@ -14,6 +14,7 @@ namespace Umbraco.Community.UmbracoEditorGuides.Models
         public int ContentTypeId { get; set; }
         public required string NodeAlias { get; set; }
         public string Title { get; set; } = "New Guide";
+        public string? Description { get; set; }
         public string? Content { get; set; }
     }
 }
