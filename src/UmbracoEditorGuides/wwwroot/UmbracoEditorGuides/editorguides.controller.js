@@ -68,6 +68,9 @@ angular.module("umbraco")
             var editorGuidesTitle = document.querySelector('#editorguides-title');
             editorGuidesTitle.value = response.data.guide.Title;
 
+            var editorGuidesDescription = document.querySelector('#editorguides-description');
+            editorGuidesDescription.value = response.data.guide.Description;
+
             vm.setViewState(vm.ViewStates.EDITING);
           }, 0);
 
