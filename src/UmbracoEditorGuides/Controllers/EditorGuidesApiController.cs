@@ -77,6 +77,34 @@ namespace Umbraco.Community.UmbracoEditorGuides.Controllers
             }
         }
 
+        [HttpPost]
+        public IActionResult EditGuide(GuideSchema guide)
+        {
+            try
+            {
+                using var scope = _scopeProvider.CreateScope();
+                var existingGuide = scope.Database.SingleOrDefault<GuideSchema>("WHERE Guid = @0", guide.Guid);
+                if (existingGuide == null)
+                {
+                    return NotFound();
+                }
+
+                existingGuide.Title = guide.Title;
+                existingGuide.Description = guide.Description;
+                existingGuide.Content =  guide.Content;
+
+                scope.Database.Update(existingGuide);
+                scope.Complete();
+
+                return Ok(new { message = "Guide edited successfully" });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error updating guide");
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
+        }
+
         [HttpDelete]
         public IActionResult DeleteGuide(Guid guid)
         {

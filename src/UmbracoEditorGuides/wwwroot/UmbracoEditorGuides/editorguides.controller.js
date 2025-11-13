@@ -3,13 +3,14 @@ angular.module("umbraco")
     var vm = this;
 
     vm.ViewStates = Object.freeze({
-      LISTING: "LISTING",
-      EDITING: "EDITING",
-      VIEWING: "VIEWING",
-      DELETING: "DELETING"
+      LIST: "LIST",
+      CREATE: "CREATE",
+      EDIT: "EDIT",
+      VIEW: "VIEW",
+      DELETE: "DELETE"
     });
 
-    vm.viewState = vm.ViewStates.LISTING;
+    vm.viewState = vm.ViewStates.LIST;
     vm.CurrentNodeId = editorState.current.id;
     vm.CurrentNodeModel = editorState.current;
     vm.CurrentNodeAlias = vm.CurrentNodeModel.contentTypeAlias;
@@ -43,12 +44,12 @@ angular.module("umbraco")
     }
 
     vm.viewGuide = (guideId) => {
-      vm.setViewState(vm.ViewStates.VIEWING);
+      vm.setViewState(vm.ViewStates.VIEW);
       vm.setCurrentGuide(guideId);
     }
 
     vm.showDeleteWarning = (guideId) => {
-      vm.setViewState(vm.ViewStates.DELETING);
+      vm.setViewState(vm.ViewStates.DELETE);
       vm.setCurrentGuide(guideId);
     }
 
@@ -62,7 +63,9 @@ angular.module("umbraco")
     vm.editGuide = (guideId) => {
       $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuideByGuid?guid=${guideId}`)
         .then((response) => {
-          vm.setViewState(vm.ViewStates.EDITING);
+          vm.setViewState(vm.ViewStates.EDIT);
+
+          vm.setCurrentGuide(guideId);
 
           $timeout(() => {
             var editorGuidesTitle = document.querySelector('#editorguides-title');
@@ -71,7 +74,7 @@ angular.module("umbraco")
             var editorGuidesDescription = document.querySelector('#editorguides-description');
             editorGuidesDescription.value = response.data.guide.Description;
 
-            vm.setViewState(vm.ViewStates.EDITING);
+            vm.setViewState(vm.ViewStates.EDIT);
           }, 0);
 
           $scope.rteEditorGuides.value = response.data.guide.Content;
@@ -81,7 +84,7 @@ angular.module("umbraco")
     vm.deleteGuide = (guideId) => {
       $http.delete(`/umbraco/backoffice/api/EditorGuidesApi/DeleteGuide?guid=${guideId}`)
         .then((response) => {
-          vm.viewState = vm.ViewStates.LISTING;
+          vm.viewState = vm.ViewStates.LIST;
           vm.loadGuides();
           notificationsService.success("Guide deleted");
         });
@@ -106,7 +109,7 @@ angular.module("umbraco")
     }
     vm.loadGuides();
 
-    vm.saveGuide = async () => {
+    vm.saveGuide = async (guide) => {
       var editorGuidesTitle = document.querySelector('#editorguides-title');
       var editorGuidesDescription = document.querySelector('#editorguides-description');
       var currentTitle = editorGuidesTitle.value;
@@ -119,23 +122,48 @@ angular.module("umbraco")
       }
 
       var editorGuideObj = {
-        "guid": self.crypto.randomUUID(),
         "contentTypeId": vm.CurrentNodeTypeId,
         "nodeAlias": vm.CurrentNodeAlias,
         "title": currentTitle,
         "description": currentDescription,
         "content": currentEditorValue,
-      }
+      };
 
-      $http.post('/umbraco/backoffice/api/EditorGuidesApi/CreateGuide', editorGuideObj)
-        .then(async () => {
-          await vm.clearGuide();
-          notificationsService.success("Guide saved successfully");
-        });
+      console.log(vm.viewState);
+
+      if (vm.viewState === vm.ViewStates.EDIT) {
+        console.log(vm.CurrentGuide.Guid);
+        await $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuideByGuid?guid=${vm.CurrentGuide.Guid}`)
+          .then((response) => {
+            console.log(response.data);
+            editorGuideObj = {
+              ...editorGuideObj,
+              guid: response.data.guide.Guid,
+            }
+          })
+        console.log(editorGuideObj);
+        await $http.post('/umbraco/backoffice/api/EditorGuidesApi/EditGuide', editorGuideObj)
+          .then(async () => {
+            await vm.clearGuide();
+            notificationsService.success("Guide updated successfully");
+          });
+      } else {
+        editorGuideObj = {
+          ...editorGuideObj,
+          "guid": self.crypto.randomUUID(),
+        };
+
+        $http.post('/umbraco/backoffice/api/EditorGuidesApi/CreateGuide', editorGuideObj)
+          .then(async () => {
+            await vm.clearGuide();
+            notificationsService.success("Guide saved successfully");
+          });
+      }
     }
 
     vm.clearGuide = () => {
-      vm.setViewState(vm.ViewStates.LISTING);
+      vm.setViewState(vm.ViewStates.LIST);
+      vm.CurrentGuide = {};
       $scope.rteEditorGuides.value = "";
     }
 

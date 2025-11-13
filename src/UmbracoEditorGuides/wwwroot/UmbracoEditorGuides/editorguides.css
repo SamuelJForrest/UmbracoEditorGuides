@@ -12,6 +12,10 @@ p {
   margin-bottom: 1rem;
 }
 
+.editorguides-container .umb-rte {
+  max-width: none;
+}
+
 .editorguides-cell--title {
   width: 30%;
 }
