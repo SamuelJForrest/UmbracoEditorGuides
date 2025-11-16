@@ -27,3 +27,12 @@ p {
 .editorguides-cell--buttons {
   vertical-align: top;
 }
+
+.editorguides-btn--back,
+.editorguides-controls--delete{
+  margin-top: 16px;
+}
+
+.editorguides-btn--new {
+  margin-bottom: 16px;
+}

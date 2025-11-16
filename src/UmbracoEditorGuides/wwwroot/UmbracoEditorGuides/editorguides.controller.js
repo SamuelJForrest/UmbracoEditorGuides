@@ -1,5 +1,5 @@
 angular.module("umbraco")
-  .controller("Umbraco.EditorGuides", function ($scope, editorState, $http, $timeout, notificationsService, tinyMceAssets, tinyMceService) {
+  .controller("Umbraco.EditorGuides", function ($scope, editorState, $http, $timeout, notificationsService) {
     var vm = this;
 
     vm.ViewStates = Object.freeze({
@@ -86,7 +86,7 @@ angular.module("umbraco")
         .then((response) => {
           vm.viewState = vm.ViewStates.LIST;
           vm.loadGuides();
-          notificationsService.success("Guide deleted");
+          notificationsService.success("Guide deleted successfully");
         });
     }
 
@@ -129,19 +129,15 @@ angular.module("umbraco")
         "content": currentEditorValue,
       };
 
-      console.log(vm.viewState);
-
       if (vm.viewState === vm.ViewStates.EDIT) {
-        console.log(vm.CurrentGuide.Guid);
         await $http.get(`/umbraco/backoffice/api/EditorGuidesApi/GetGuideByGuid?guid=${vm.CurrentGuide.Guid}`)
           .then((response) => {
-            console.log(response.data);
             editorGuideObj = {
               ...editorGuideObj,
               guid: response.data.guide.Guid,
             }
           })
-        console.log(editorGuideObj);
+
         await $http.post('/umbraco/backoffice/api/EditorGuidesApi/EditGuide', editorGuideObj)
           .then(async () => {
             await vm.clearGuide();

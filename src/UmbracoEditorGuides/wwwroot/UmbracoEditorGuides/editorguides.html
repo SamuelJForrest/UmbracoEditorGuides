@@ -3,7 +3,7 @@
   <div class="editorguides-container">
     <uui-box ng-if="vm.viewState == vm.ViewStates.LIST">
       <div slot="headline">Guides <span ng-if="vm.FriendlyDocTypeName">({{ vm.FriendlyDocTypeName }})</span></div>
-      <uui-button label="New Guide" look="primary" ng-click="vm.setViewState(vm.ViewStates.CREATE)" style="margin-bottom: 16px;"></uui-button>
+      <uui-button label="New Guide" look="primary" ng-click="vm.setViewState(vm.ViewStates.CREATE)" class="editorguides-btn--new"></uui-button>
 
       <div class="editorguides-list-container">
         <uui-table ng-if="vm.CurrentGuides.length > 0">
@@ -31,26 +31,30 @@
       </div>
     </uui-box>
 
-    <uui-box headline="{{ vm.viewState == vm.ViewStates.CREATE ? New Guide : Edit Guide }}" ng-if="vm.viewState == vm.ViewStates.CREATE || vm.viewState == vm.ViewStates.EDIT">
-      <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..." class="editorguides-input"></uui-input>
-      <uui-input label="Guide Description" id="editorguides-description" placeholder="Description..." class="editorguides-input"></uui-input>
-      <umb-property-editor id="editorguides-input" model="rteEditorGuides" class="editorguides-editor"></umb-property-editor>
-      <div class="editorguides-editor-controls">
-        <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.clearGuide()"></uui-button>
-        <uui-button label="Save" look="primary" ng-click="vm.saveGuide()"></uui-button>
-      </div>
+    <uui-box headline="{{ vm.viewState == vm.ViewStates.CREATE ? 'New Guide' : 'Edit Guide' }}" ng-if="vm.viewState == vm.ViewStates.CREATE || vm.viewState == vm.ViewStates.EDIT">
+      <form id="EditorGuidesForm" name="guideForm">
+        <uui-input label="Guide Title" id="editorguides-title" placeholder="Guide title..." class="editorguides-input"></uui-input>
+        <uui-input label="Guide Description" id="editorguides-description" placeholder="Description..." class="editorguides-input"></uui-input>
+        <umb-property-editor id="editorguides-input" model="rteEditorGuides" class="editorguides-editor"></umb-property-editor>
+        <div class="editorguides-editor-controls">
+          <uui-button label="Cancel" look="primary" color="danger" ng-click="vm.clearGuide()"></uui-button>
+          <uui-button label="Save" look="primary" type="submit" ng-click="vm.saveGuide()"></uui-button>
+        </div>
+      </form>
     </uui-box>
 
     <uui-box headline="{{ vm.CurrentGuide.Title }}" ng-if="vm.viewState == vm.ViewStates.VIEW">
       <div ng-bind-html="vm.CurrentGuide.Content"></div>
 
-      <uui-button label="Back" look="primary" color="danger" ng-click="vm.setViewState(vm.ViewStates.LIST)"></uui-button>
+      <uui-button class="editorguides-btn--back" label="Back" look="primary" color="danger" ng-click="vm.setViewState(vm.ViewStates.LIST)"></uui-button>
     </uui-box>
 
-    <uui-box headline="Delete {{ vm.CurrentGuide.Title }}?" ng-if="vm.viewState == vm.ViewStates.DELETE">
+    <uui-box headline="Delete '{{ vm.CurrentGuide.Title }}'?" ng-if="vm.viewState == vm.ViewStates.DELETE">
       <p>Are you sure you want to delete "<em><strong>{{ vm.CurrentGuide.Title }}</strong></em>"? This cannot be undone.</p>
-      <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(vm.CurrentGuide.Guid)"></uui-button>
-      <uui-button label="Go back" look="primary" ng-click="vm.setViewState(vm.ViewStates.LIST)"></uui-button>
+      <div class="editorguides-controls--delete">
+        <uui-button look="primary" label="Delete" color="danger" ng-click="vm.deleteGuide(vm.CurrentGuide.Guid)"></uui-button>
+        <uui-button label="Go back" look="primary" ng-click="vm.setViewState(vm.ViewStates.LIST)"></uui-button>
+      </div>
     </uui-box>
   </div>
 </div>
