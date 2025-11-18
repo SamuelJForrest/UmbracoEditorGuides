@@ -33,6 +33,27 @@ p {
   margin-top: 16px;
 }
 
-.editorguides-btn--new {
-  margin-bottom: 16px;
+.editorguides-list-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  margin-top: 16px;
+}
+
+.editorguides-list {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.editorguides-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  background: var(--uui-color-surface, #FFF);
+  border-radius: var(--uui-border-radius, 3px);
+  box-shadow: var(--uui-shadow-depth-1);
+  padding: 16px;
 }

@@ -1,35 +1,25 @@
 
 <div ng-controller="Umbraco.EditorGuides as vm">
   <div class="editorguides-container">
-    <uui-box ng-if="vm.viewState == vm.ViewStates.LIST">
-      <div slot="headline">Guides <span ng-if="vm.FriendlyDocTypeName">({{ vm.FriendlyDocTypeName }})</span></div>
-      <uui-button label="New Guide" look="primary" ng-click="vm.setViewState(vm.ViewStates.CREATE)" class="editorguides-btn--new"></uui-button>
+    <div ng-if="vm.viewState == vm.ViewStates.LIST" class="editorguides-header">
+      <h1>Guides <span ng-if="vm.FriendlyDocTypeName">({{ vm.FriendlyDocTypeName }})</span></h1>
+      <uui-button label="New Guide" look="primary" ng-click="vm.setViewState(vm.ViewStates.CREATE)" slot="header-actions" class="editorguides-btn--new"></uui-button>
+    </div>
 
-      <div class="editorguides-list-container">
-        <uui-table ng-if="vm.CurrentGuides.length > 0">
-          <uui-table-head>
-            <uui-table-head-cell>Title</uui-table-head-cell>
-            <uui-table-head-cell>Description</uui-table-head-cell>
-            <uui-table-head-cell>Actions</uui-table-head-cell>
-          </uui-table-head>
-          <uui-table-row ng-repeat="guide in vm.CurrentGuides">
-            <uui-table-cell class="editorguides-cell--title">{{ guide.Title }}</uui-table-cell>
-            <uui-table-cell class="editorguides-cell--description">{{ guide.Description }}</uui-table-cell>
-            <uui-table-cell class="editorguides-cell--buttons">
-              <uui-button-group>
-                <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.Guid)"></uui-button>
-                <uui-button look="secondary" label="Edit" ng-click="vm.editGuide(guide.Guid)"></uui-button>
-                <uui-button look="primary" label="Delete" color="danger" ng-click="vm.showDeleteWarning(guide.Guid)"></uui-button>
-              </uui-button-group>
-            </uui-table-cell>
-          </uui-table-row>
-        </uui-table>
+    <div class="editorguides-list-container" ng-if="vm.viewState == vm.ViewStates.LIST">
+      <uui-card-content-node ng-if="vm.CurrentGuides.length > 0" name="{{ guide.Title }}" ng-repeat="guide in vm.CurrentGuides">
+        <ul class="editorguides-list">
+          <li>{{ guide.Description }}</li>
+        </ul>
+        <uui-button look="primary" label="View" ng-click="vm.viewGuide(guide.Guid)"></uui-button>
+        <uui-button look="secondary" label="Edit" ng-click="vm.editGuide(guide.Guid)"></uui-button>
+        <uui-button look="primary" label="Delete" color="danger" ng-click="vm.showDeleteWarning(guide.Guid)"></uui-button>
+      </uui-card-content-node>
 
-        <div ng-if="vm.CurrentGuides.length < 1">
-          Nothing to see here... check back later.
-        </div>
+      <div ng-if="vm.CurrentGuides.length < 1">
+        Nothing to see here... check back later.
       </div>
-    </uui-box>
+    </div>
 
     <uui-box headline="{{ vm.viewState == vm.ViewStates.CREATE ? 'New Guide' : 'Edit Guide' }}" ng-if="vm.viewState == vm.ViewStates.CREATE || vm.viewState == vm.ViewStates.EDIT">
       <form id="EditorGuidesForm" name="guideForm">
